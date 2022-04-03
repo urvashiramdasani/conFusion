@@ -26,9 +26,9 @@ function changeDateFormat(date) {
     return dateString;
 }
 
-function RenderComments({comments}) {
-    if(comments != null) {
-        const comments = comments.map((comment) => {
+function RenderComments({dish}) {
+    if(dish != null) {
+        const comments = dish.comments.map((comment) => {
             return (
                 <li key="{comment.id}">
                     <p>{comment.comment}</p>
@@ -58,7 +58,7 @@ const DishDetail = (props) => {
         <div className='container'>
             <div className='row'>
                 <RenderDish dish={props.dish} />
-                <RenderComments comments={props.dish.comments} />
+                <RenderComments comments={props.dish} />
             </div>
         </div>
     );
