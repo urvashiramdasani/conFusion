@@ -10,6 +10,7 @@ import { LEADERS } from '../shared/leaders';
 import { PROMOTIONS } from '../shared/promotions';
 import React, { Component } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
+import { useParams } from "react-router-dom";
 
 class Main extends Component{
     constructor(props) {
@@ -31,13 +32,23 @@ class Main extends Component{
             );
         }
 
+        const DishWithId = () => {
+            let {dishId} = useParams();
+            
+            return(
+                <DishDetail dish={this.state.dishes.filter((dish) => dish.id === parseInt(dishId, 10))[0]}
+                comments={this.state.comments.filter((comment) => comment.dishId === parseInt(dishId, 10))} />
+            );
+        }
+
         return(
             <div>
                 <Header />
                 <Routes>
                     <Route path='/home' element={<HomePage />} />
-                    <Route path="/menu" element={<Menu dishes={this.state.dishes} />} />
-                    <Route path="/contactus" element={<Contact />} />
+                    <Route exact path="/menu" element={<Menu dishes={this.state.dishes} />} />
+                    <Route path="/menu/:dishId" element={<DishWithId />} />
+                    <Route exact path="/contactus" element={<Contact />} />
                     <Route path="*" element={<Navigate to="/home" replace />} />
                 </Routes>
                 <Footer />
