@@ -11,7 +11,7 @@ import { connect } from 'react-redux';
 import { useParams } from "react-router-dom";
 import { fetchDishes, fetchComments, fetchPromos, postComment } from '../redux/ActionsCreators';
 import { actions } from 'react-redux-form';
-
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
 const mapStateToProps = state => {
     return {
@@ -39,6 +39,7 @@ function withRouter(Component) {
             <Component
                 {...props}
                 router={{ location, navigate, params }}
+                location={location}
             />
         );
     }
@@ -87,14 +88,18 @@ class Main extends Component {
         return(
             <div>
                 <Header />
-                <Routes>
-                    <Route path='/home' element={ <HomePage /> } />
-                    <Route path="/aboutus" element={ <About leaders={ this.props.leaders } /> } />
-                    <Route exact path="/menu" element={ <Menu dishes={ this.props.dishes } /> } />
-                    <Route path="/menu/:dishId" element={ <DishWithId /> } />
-                    <Route exact path="/contactus" element={ <Contact resetFeedbackForm={ this.props.resetFeedbackForm } /> } />
-                    <Route path="*" element={ <Navigate to="/home" replace /> } />
-                </Routes>
+                <TransitionGroup>
+                    <CSSTransition key={this.props.location.key} classNames='page' timeout={300}>
+                        <Routes>
+                            <Route path='/home' element={ <HomePage /> } />
+                            <Route path="/aboutus" element={ <About leaders={ this.props.leaders } /> } />
+                            <Route exact path="/menu" element={ <Menu dishes={ this.props.dishes } /> } />
+                            <Route path="/menu/:dishId" element={ <DishWithId /> } />
+                            <Route exact path="/contactus" element={ <Contact resetFeedbackForm={ this.props.resetFeedbackForm } /> } />
+                            <Route path="*" element={ <Navigate to="/home" replace /> } />
+                        </Routes>
+                    </CSSTransition>
+                </TransitionGroup>
                 <Footer />
             </div>
         );
